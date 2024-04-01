@@ -69,4 +69,12 @@ exit 0
 ## Usage
 
 ```terraform
+module "physnet2-module" {
+  source           = "github.com/vivienbcr/terraform-microstack-physnet"
+  os_provider      = var.os_provider
+  physical_network = "physnet2"
 
+  management_network_name = "management"
+  management_subnet_cidr  = "172.16.1.0/24"
+}
+```
