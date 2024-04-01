@@ -77,4 +77,22 @@ module "physnet2-module" {
   management_network_name = "management"
   management_subnet_cidr  = "172.16.1.0/24"
 }
+
+
+resource "openstack_networking_port_v2" "port_management" {
+  name                  = "port_management"
+  network_id            = module.terraform-microstack-physnet.management_network.id
+  admin_state_up        = "true"
+  no_security_groups    = "true" # Match with your use case
+  port_security_enabled = "false" # Match with your use case
+
+  fixed_ip {
+    subnet_id = module.terraform-microstack-physnet.management_subnet.id
+  }
+
+}
+resource "openstack_compute_interface_attach_v2" "vm_x_port_management" {
+  instance_id = openstack_compute_instance_v2.vm_x.id
+  port_id     = openstack_networking_port_v2.port_vmx_management.id
+}
 ```
